@@ -1,5 +1,8 @@
 using ImageAddWatermarkApp.Web.Models;
+using ImageAddWatermarkApp.Web.Services;
 using Microsoft.EntityFrameworkCore;
+using RabbitMQ.Client;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,19 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseInMemoryDatabase(databaseName: "productDb");
 });
+
+
+#region RabbitMQ
+
+var rabbitMQConnection = builder.Configuration.GetSection("RabbitMQConnection").Get<RabbitMQConnection>();
+builder.Services.AddSingleton(sp =>
+{
+    return new ConnectionFactory() { Port = rabbitMQConnection.Port, HostName = rabbitMQConnection.HostName, UserName = rabbitMQConnection.UserName, Password = rabbitMQConnection.Password };
+});
+
+builder.Services.AddSingleton<RabbitMQClientService>(); 
+
+#endregion
 
 var app = builder.Build();
 
