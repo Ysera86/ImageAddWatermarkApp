@@ -17,6 +17,8 @@ namespace ImageAddWatermarkApp.Web.Services
 
         public RabbitMQClientService(ConnectionFactory connectionFactory, ILogger<RabbitMQClientService> logger)
         {
+            
+            
             _connectionFactory = connectionFactory;
             _logger = logger;
 
@@ -37,7 +39,7 @@ namespace ImageAddWatermarkApp.Web.Services
 
             _channel.QueueDeclare(QueueName, true, false, false, null);
 
-            _channel.QueueBind(ExchangeName, QueueName, routingKey: RoutingWatermark);
+            _channel.QueueBind(exchange: ExchangeName, queue: QueueName, routingKey: RoutingWatermark);
 
             _logger.LogInformation("RabbitMQ connection successful..");
 
