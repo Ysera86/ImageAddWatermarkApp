@@ -9,11 +9,11 @@ namespace ImageAddWatermarkApp.Web.Models
         public int Id { get; set; }
         [StringLength(100)]
         public string Name { get; set; }
-        [Column(TypeName ="decimal(18,2")]
+        [Column(TypeName ="decimal(18,2)")]
         public decimal Price { get; set; }
         [Range(1,100)]
         public int Stock { get; set; }
         [StringLength(100)]
-        public string PictureUrl { get; set; }
+        public string? ImageName { get; set; }
     }
 }
