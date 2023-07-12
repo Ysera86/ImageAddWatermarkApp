@@ -1,3 +1,4 @@
+using ImageAddWatermarkApp.Web.BackgroundServices;
 using ImageAddWatermarkApp.Web.Models;
 using ImageAddWatermarkApp.Web.Services;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,12 @@ builder.Services.AddSingleton<RabbitMQClientService>();
 
 builder.Services.AddSingleton<RabbitMQPublisher>();
 
+
+#endregion
+
+#region Background Service
+
+builder.Services.AddHostedService<ImageWatermarkProcessBackgroundService>();
 
 #endregion
 
