@@ -41,11 +41,13 @@ namespace ImageAddWatermarkApp.Web.BackgroundServices
 
         private Task Consumer_Received(object sender, BasicDeliverEventArgs @event)
         {
+            Task.Delay(5000).Wait();
+
             try
             {
                 var productImageCreatedEvent = JsonSerializer.Deserialize<ProductImageCreatedEvent>(Encoding.UTF8.GetString(@event.Body.ToArray()));
 
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "www/images", productImageCreatedEvent.ImageName);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", productImageCreatedEvent.ImageName);
 
                 var siteName = "www.mysite.com";
 
@@ -53,7 +55,7 @@ namespace ImageAddWatermarkApp.Web.BackgroundServices
 
                 using var graphic = Graphics.FromImage(img);
 
-                var font = new Font(FontFamily.GenericSansSerif, 32, FontStyle.Bold, GraphicsUnit.Pixel);
+                var font = new Font(FontFamily.GenericSansSerif, 40, FontStyle.Bold, GraphicsUnit.Pixel);
 
                 var textSize = graphic.MeasureString(siteName, font);
 
@@ -61,7 +63,7 @@ namespace ImageAddWatermarkApp.Web.BackgroundServices
 
                 var brush = new SolidBrush(color);
 
-                var position = new Point(img.Width - ((int)textSize.Width + 30), img.Height - ((int)textSize.Height) + 30);
+                var position = new Point(img.Width - ((int)textSize.Width + 30), img.Height - ((int)textSize.Height + 30));
 
                 graphic.DrawString(siteName, font, brush, position);
 
@@ -72,9 +74,9 @@ namespace ImageAddWatermarkApp.Web.BackgroundServices
 
                 _channel.BasicAck(@event.DeliveryTag, false); // rabbitmq mesajı sil, işledim.
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex.Message);
                 throw;
             }
 
