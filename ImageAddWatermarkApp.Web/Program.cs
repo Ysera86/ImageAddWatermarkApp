@@ -21,7 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 var rabbitMQConnection = builder.Configuration.GetSection("RabbitMQConnection").Get<RabbitMQConnection>();
 builder.Services.AddSingleton(sp =>
 {
-    return new ConnectionFactory() { Port = rabbitMQConnection.Port, HostName = rabbitMQConnection.HostName, UserName = rabbitMQConnection.UserName, Password = rabbitMQConnection.Password };
+    return new ConnectionFactory() { Port = rabbitMQConnection.Port, HostName = rabbitMQConnection.HostName, UserName = rabbitMQConnection.UserName, Password = rabbitMQConnection.Password, DispatchConsumersAsync = true };
 });
 
 builder.Services.AddSingleton<RabbitMQClientService>();
