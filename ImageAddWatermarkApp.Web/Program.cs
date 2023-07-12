@@ -23,7 +23,11 @@ builder.Services.AddSingleton(sp =>
     return new ConnectionFactory() { Port = rabbitMQConnection.Port, HostName = rabbitMQConnection.HostName, UserName = rabbitMQConnection.UserName, Password = rabbitMQConnection.Password };
 });
 
-builder.Services.AddSingleton<RabbitMQClientService>(); 
+builder.Services.AddSingleton<RabbitMQClientService>();
+
+
+builder.Services.AddSingleton<RabbitMQPublisher>();
+
 
 #endregion
 
